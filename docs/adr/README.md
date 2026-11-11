@@ -19,8 +19,9 @@ All ADRs below are **Accepted**.
 | [011](./011-redundant-alert-delivery.md) | Redundant alert delivery across five channels | Accepted |
 | [012](./012-distribution-and-side-loading.md) | Multi-channel distribution and side-loading strategy | Accepted |
 | [013](./013-duress-and-stealth-features.md) | Duress PIN and stealth features, side-load channel only | Accepted |
-| [014](./014-open-source-posture.md) | Open-source posture: verifier and evidence format FOSS | Accepted, amended by 015 |
-| [015](./015-consolidated-layout-and-service-stack.md) | Eight-project layout, namespace-level architecture tests, controllers, Dapper + DbUp, bespoke authentication | Accepted |
+| [014](./014-open-source-posture.md) | Open-source posture: verifier and evidence format FOSS | Accepted, amended by 015, superseded in part by 016 |
+| [015](./015-consolidated-layout-and-service-stack.md) | Eight-project layout, namespace-level architecture tests, controllers, Dapper + DbUp, bespoke authentication | Accepted, amended by 016 |
+| [016](./016-apache-2-whole-repository.md) | Apache License 2.0 for the whole repository; copyright Jeffrey Varszegi | Accepted |
 
 Programme decisions that are not architectural — iOS lands in Phase 2, and the working
 name stays "Personal Recorder" (`PersonalRecorder.*`) — are recorded in

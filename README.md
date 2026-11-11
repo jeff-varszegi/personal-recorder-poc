@@ -2,7 +2,7 @@
 
 > "Evidence that cannot be deleted, confiscated, or suppressed; help that cannot be blocked or delayed."
 
-A **NimbleJinn** project: a personal recording and emergency-response system for legal observers, witnesses of government activity, domestic-violence survivors, home-alone seniors, and general personal safety.
+A project by **Jeffrey Varszegi**: a personal recording and emergency-response system for legal observers, witnesses of government activity, domestic-violence survivors, home-alone seniors, and general personal safety.
 
 ## Status
 
@@ -28,13 +28,13 @@ personal-recorder/
 ├── PersonalRecorder.slnx
 ├── PersonalRecorder.WorkloadFree.slnf   everything that builds without a mobile workload (the CI core job)
 ├── components/
-│   ├── core/       PersonalRecorder.Core       models, evidence format, cryptography — open source
+│   ├── core/       PersonalRecorder.Core       models, evidence format, cryptography
 │   ├── client/     PersonalRecorder.Client     capture, recording, sync, storage, presentation (net10.0 + android)
 │   │               PersonalRecorder.App        the MAUI shell
 │   │               PersonalRecorder.Harness    headless Android capture harness, until Spike C passes
 │   ├── service/    PersonalRecorder.Service    the back end: one process, feature namespaces
 │   ├── web/        PersonalRecorder.Web        Blazor WASM PWA
-│   └── verifier/   PersonalRecorder.Verifier   open-source evidence verifier CLI
+│   └── verifier/   PersonalRecorder.Verifier   offline evidence verifier CLI
 ├── test/           PersonalRecorder.Tests      .Core · .Client · .Service · .Architecture
 ├── tools/          docker-compose.dev.yml, build & signing scripts
 ├── docs/           architecture, ADRs, proposals
@@ -88,6 +88,6 @@ The architecture tests in `test/PersonalRecorder.Tests` enforce the dependency r
 
 ## License
 
-Proprietary — © 2026 NimbleJinn LLC (formation in progress, New Hampshire). All rights reserved.
+[Apache License 2.0](./LICENSE) — Copyright © 2026 Jeffrey Varszegi. See also [NOTICE](./NOTICE).
 
-**`PersonalRecorder.Core` (the evidence format and its implementation) and the verifier CLI are open source** regardless of the rest ([ADR-014](./docs/adr/014-open-source-posture.md), [ADR-015](./docs/adr/015-consolidated-layout-and-service-stack.md)) — independent verification is worthless if it depends on trusting us.
+The whole repository is currently open source but may be adjusted later ([ADR-016](./docs/adr/016-apache-2-whole-repository.md)). `PersonalRecorder.Core` (the evidence format and its implementation) and the verifier CLI stay open permanently, whatever is decided for the product projects before the first public release ([ADR-014](./docs/adr/014-open-source-posture.md)) — independent verification is worthless if it depends on trusting us.

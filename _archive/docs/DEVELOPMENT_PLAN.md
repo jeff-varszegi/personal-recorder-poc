@@ -387,7 +387,7 @@ Conferencing via LiveKit (E2EE where feasible); geofencing; zero-knowledge hard 
 | D6 | iOS in **Phase 2**. Confidence basis: .NET for iOS is first-party and stable (decade-plus Xamarin.iOS lineage in production), and the capture core uses the same AVFoundation APIs every iOS camera app uses — the residual iOS risk is App Store *policy*, not technology; mitigated by the store-clean build, TestFlight, and the PWA floor |
 | D7 | Hosting jurisdiction **deferred** (legal question; architecture stays provider-neutral either way) |
 | D8 | Repo housekeeping approved and executed: ADRs 001–007 authored, ADR index reset, README and spec §4/§8/§10/§11 updated |
-| D9 | Entity: **NimbleJinn LLC (New Hampshire, formation in progress)**; Google developer verification to follow immediately after formation |
+| D9 | Entity: (New Hampshire, formation in progress)**; Google developer verification to follow immediately after formation |
 
 ---
 

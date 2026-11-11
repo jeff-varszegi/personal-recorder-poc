@@ -28,7 +28,7 @@ Distribution is engineered as a feature, across parallel channels:
 | `adb install` | documented | Advanced-user escape hatch, still available under the new rules |
 
 **Time-critical actions, starting immediately:**
-1. Complete NimbleJinn LLC formation, then Google developer verification. Play Console organization accounts require a **D-U-N-S number** — free, but with lead time measured in weeks. This is the longest-lead item in the project and it is gated by legal formation, not engineering.
+1. Complete LLC formation, then Google developer verification. Play Console organization accounts require a **D-U-N-S number** — free, but with lead time measured in weeks. This is the longest-lead item in the project and it is gated by legal formation, not engineering.
 2. **Signing-key ceremony** — keys generated offline, SHA-256 certificate fingerprints published, custody documented. Key custody cannot be retrofitted after the first external install.
 3. Update-manifest endpoint and mirror, live before the first user installs.
 4. Reproducible builds as a stated goal, targeted in Phase 3.

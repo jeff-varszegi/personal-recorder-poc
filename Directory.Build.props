@@ -27,10 +27,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Company>NimbleJinn LLC</Company>
+    <Company>Jeffrey Varszegi</Company>
     <Product>Personal Recorder</Product>
-    <Authors>NimbleJinn LLC</Authors>
-    <Copyright>Copyright © 2026 NimbleJinn LLC</Copyright>
+    <Authors>Jeffrey Varszegi</Authors>
+    <Copyright>Copyright © 2026 Jeffrey Varszegi</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 

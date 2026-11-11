@@ -2,7 +2,7 @@
 
 > "Evidence that cannot be deleted, confiscated, or suppressed; help that cannot be blocked or delayed."
 
-A **NimbleJinn** project: personal recording and emergency-response system for legal observers, witnesses, and individuals in vulnerable situations.
+A project for a personal recording and emergency-response system for legal observers, witnesses, and individuals in vulnerable situations.
 
 ## Status
 
@@ -51,5 +51,5 @@ Build/run commands will be documented here once the Phase 0 scaffold exists.
 
 ## License
 
-Proprietary — © 2026 NimbleJinn (LLC formation in progress, New Hampshire). All rights reserved.
+Proprietary. All rights reserved.
 Open-source posture will be revisited (~Phase 3); the verifier CLI will be open source regardless. See [Development Plan §6.5](./docs/DEVELOPMENT_PLAN.md).

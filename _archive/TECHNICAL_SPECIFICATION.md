@@ -781,7 +781,6 @@ Given the stated requirement for distribution independent of app store approval:
 > in initial countries, global 2027) requires sideloaded apps on certified Android devices to
 > carry a Google-verified developer signature. Full channel strategy, mitigations, and
 > time-sensitive actions: [DEVELOPMENT_PLAN.md §6](./docs/DEVELOPMENT_PLAN.md).
-> Publishing entity: NimbleJinn LLC (New Hampshire, forming).
 
 #### Android
 - **APK Distribution**: Direct download from website + **in-app self-updater from the first public build** (Signal model), mirrored on GitHub Releases
@@ -891,7 +890,7 @@ Summary:
 |----|----------|---------|----------------|
 | Q1 | Open source vs. proprietary? | Full OSS / Core OSS / Proprietary | **Decided 2026-07-31: proprietary initially; revisit ~Phase 3.** Verifier CLI FOSS regardless |
 | Q2 | Self-hosting option? | Yes / No | Yes, for orgs with compliance needs |
-| Q3 | Jurisdiction for incorporated entity? | US / EU / Other | **Publishing entity: NimbleJinn LLC (New Hampshire, forming 2026).** Service-hosting jurisdiction still open (legal question) |
+| Q3 | Jurisdiction for incorporated entity? | US / EU / Other | **Publishing entity: (New Hampshire, forming 2026).** Service-hosting jurisdiction still open (legal question) |
 | Q4 | Recording consent notifications? | Always / Configurable / Jurisdiction-based | Jurisdiction-based with safe defaults |
 | Q5 | Insurance/liability coverage? | Required / Optional | Required for peace of mind |
 | Q6 | Name - "Personal Recorder"? | Keep / Alternatives | **Decided 2026-07-31: locked as working name; namespaces `PersonalRecorder.*`** |
@@ -927,7 +926,7 @@ Summary:
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 0.1 | 2026-01-16 | Initial Assessment | Document creation from requirements discussion |
-| 0.2 | 2026-07-31 | Stack Ratification | Client superseded: React Native → all-C# capture core + MAUI shell (ADR-003); evidence pipeline → encrypted chunked upload (ADR-005); backend → .NET 10 lean MVP (ADR-002); distribution updated for 2026 landscape; roadmap superseded by docs/DEVELOPMENT_PLAN.md; entity: NimbleJinn LLC |
+| 0.2 | 2026-07-31 | Stack Ratification | Client superseded: React Native → all-C# capture core + MAUI shell (ADR-003); evidence pipeline → encrypted chunked upload (ADR-005); backend → .NET 10 lean MVP (ADR-002); distribution updated for 2026 landscape; roadmap superseded by docs/DEVELOPMENT_PLAN.md; entity: |
 
 ---
 

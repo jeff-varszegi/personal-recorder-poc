@@ -1,7 +1,7 @@
 # Personal Recorder — System Architecture
 
 **Status:** **Accepted** — decisions D1–D15 ratified (see §17.1); recorded as [ADRs 001–014](./adr/).
-**Entity:** NimbleJinn LLC (New Hampshire, formation in progress)
+**Author:** Jeffrey Varszegi
 **Supersedes:** the earlier development plan and ADRs preserved in `_archive/`.
 
 > "Evidence that cannot be deleted, confiscated, or suppressed; help that cannot be blocked or delayed."
@@ -192,14 +192,14 @@ personal-recorder/
 ├── PersonalRecorder.WorkloadFree.slnf           # the subset that builds without a mobile workload (CI core job)
 ├── global.json · Directory.Build.props · Directory.Packages.props · .editorconfig
 ├── components/
-│   ├── core/PersonalRecorder.Core/              # net10.0 — open source. Namespaces: PersonalRecorder, .Models, .Evidence, .Cryptography
+│   ├── core/PersonalRecorder.Core/              # net10.0. Namespaces: PersonalRecorder, .Models, .Evidence, .Cryptography
 │   ├── client/
 │   │   ├── PersonalRecorder.Client/             # net10.0 + net10.0-android (+ios in Phase 2): Capture, Recording, Sync, Storage, Remote, Presentation
 │   │   ├── PersonalRecorder.App/                # MAUI shell — net10.0-android (+ios in Phase 2)
 │   │   └── PersonalRecorder.Harness/            # headless .NET for Android capture harness; deleted once Spike C passes
 │   ├── service/PersonalRecorder.Service/        # net10.0 — one process, feature namespaces (§9.1)
 │   ├── web/PersonalRecorder.Web/                # Blazor WASM PWA
-│   └── verifier/PersonalRecorder.Verifier/      # CLI — open source
+│   └── verifier/PersonalRecorder.Verifier/      # CLI
 ├── test/PersonalRecorder.Tests/                 # .Core · .Client · .Service · .Architecture
 ├── tools/docker-compose.dev.yml                 # PostgreSQL 17 + MinIO, buckets auto-created
 ├── .github/workflows/build.yml                  # core job (workload-free filter) + separate Android job
@@ -207,7 +207,7 @@ personal-recorder/
 └── design/                                      # naming history, UX notes
 ```
 
-Four things force an assembly boundary, and nothing else does: target framework, deployment artifact, the open-source boundary (ADR-014), and the replaceable shell (ADR-002). Layering inside an assembly is expressed by namespace and enforced by §5.3.
+Four things force an assembly boundary, and nothing else does: target framework, deployment artifact, the licensing boundary (ADR-014, ADR-016: Core and Verifier stay open whatever is decided for the product projects), and the replaceable shell (ADR-002). Layering inside an assembly is expressed by namespace and enforced by §5.3.
 
 **Naming.** `Core` owns the root namespace: it contains `PersonalRecorder`, `PersonalRecorder.Models`, `PersonalRecorder.Evidence` and `PersonalRecorder.Cryptography`, and the `Core` segment appears in no namespace. Every other assembly namespaces under its own name (`PersonalRecorder.Client.Capture`, `PersonalRecorder.Service.Ingest`).
 
@@ -514,7 +514,7 @@ No programmatic dialling. Panic presents a persistent overlay with 911 pre-loade
 
 ### 12.3 Actions on the critical path (start now — see D11)
 
-1. **Complete NimbleJinn LLC formation, then Google developer verification immediately.** Play Console organization accounts require a **D-U-N-S number**; it is free but lead time runs weeks. This is the longest-lead item in the entire project and it is gated by a legal formation, not by engineering.
+1. **Complete LLC formation, then Google developer verification immediately.** Play Console organization accounts require a **D-U-N-S number**; it is free but lead time runs weeks. This is the longest-lead item in the entire project and it is gated by a legal formation, not by engineering.
 2. **Signing-key ceremony** — generate Android signing keys offline, publish SHA-256 certificate fingerprints on the site and in docs (`apksigner verify --print-certs`), document custody (who, where, hardware token). Do this *before* the first external install; key custody cannot be retrofitted.
 3. **Stand up the update-manifest endpoint and mirror** — a static signed JSON plus APKs. Trivial, but must exist before the first user installs.
 4. **Reproducible builds** — stated goal, targeted in Phase 3; a major trust signal for this audience.
@@ -628,7 +628,7 @@ Conferencing via self-hosted **LiveKit** (`COM-003`); geofencing; zero-knowledge
 | **D10** | Alert delivery | **FCM + APNs + UnifiedPush + SignalR + optional SMS**, per-channel delivery receipts, visible escalation on failure (§11) |
 | **D11** | Distribution — **time-critical** | **Start entity formation, D-U-N-S, Google developer verification and the signing-key ceremony now.** Advanced-flow friction is global; hard enforcement is phased in by country (§12.1, §12.3) |
 | **D12** | Duress features | **Build duress PIN + decoy state, sideload-channel only, default off, never destructive.** High value for the DV and detention scenarios |
-| **D13** | Open-source posture | **Verifier CLI *and* the evidence format specification are FOSS from day 1** (that is what buys trust); client and service proprietary for now, revisit ~Phase 3 |
+| **D13** | Open-source posture | **Verifier CLI *and* the evidence format specification are open source permanently** (that is what buys trust); the whole repository is Apache-2.0 (ADR-016), with the product projects' license re-examined before the first public release |
 | **D14** | iOS timing | **Phase 2.** Android + PWA covers every user at MVP without doubling Phase 1 |
 | **D15** | Name | Keep **"Personal Recorder"** / `PersonalRecorder.*`. Rebranding later needs no codebase change; `design/NAMING.md` holds the candidate list |
 
@@ -650,7 +650,7 @@ D1–D15 ratified as recommended. Two carried explicit comment from Jeffrey: **D
 | D10 | Five-channel alert delivery with per-channel receipts | [ADR-011](./adr/011-redundant-alert-delivery.md) |
 | D11 | Multi-channel distribution; entity, D-U-N-S, verification and signing ceremony start now | [ADR-012](./adr/012-distribution-and-side-loading.md) |
 | D12 | **Agreed.** Duress PIN + decoy state, side-load channel only, default off, never destructive | [ADR-013](./adr/013-duress-and-stealth-features.md) |
-| D13 | Verifier CLI and evidence format specification FOSS; client and service proprietary, revisit ~Phase 3 | [ADR-014](./adr/014-open-source-posture.md) |
+| D13 | Verifier CLI and evidence format specification open permanently; the whole repository Apache-2.0 | [ADR-014](./adr/014-open-source-posture.md), [ADR-016](./adr/016-apache-2-whole-repository.md) |
 | D14 | iOS in Phase 2 | This document, §15 |
 | D15 | **Name kept**: "Personal Recorder", `PersonalRecorder.*`. Rebranding later requires no codebase change | This document |
 

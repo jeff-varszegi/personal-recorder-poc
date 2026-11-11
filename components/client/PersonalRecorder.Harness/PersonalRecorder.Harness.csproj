@@ -12,7 +12,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>PersonalRecorder.Harness</RootNamespace>
     <SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>
-    <ApplicationId>com.nimblejinn.personalrecorder.harness</ApplicationId>
+    <ApplicationId>com.jeffreyvarszegi.personalrecorder.harness</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>0.1.0</ApplicationDisplayVersion>
     <TrimMode>full</TrimMode>

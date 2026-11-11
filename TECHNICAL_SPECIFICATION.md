@@ -793,11 +793,11 @@ Given the stated requirement for distribution independent of app store approval:
 > Indonesia, Singapore and Thailand and then worldwide. Full channel strategy, mitigations
 > and time-sensitive actions: [ADR-012](./docs/adr/012-distribution-and-side-loading.md)
 > and [ARCHITECTURE.md §12](./docs/ARCHITECTURE.md).
-> Publishing entity: NimbleJinn LLC (New Hampshire, forming).
+> Publishing entity: Jeffrey Varszegi; an LLC (New Hampshire) is planned before store publication.
 
 #### Android
 - **APK Distribution**: Direct download from website + **in-app self-updater from the first public build** (Signal model), mirrored on GitHub Releases
-- **Own F-Droid repository**: Our repo, our signing, no main-repo policy gate (main F-Droid repo only if/when open-sourced)
+- **Own F-Droid repository**: Our repo, our signing, no main-repo policy gate; the main F-Droid repository is also an option now that the code is open ([ADR-016](./docs/adr/016-apache-2-whole-repository.md))
 - **Obtainium**: Supported via stable release URLs and versioning discipline
 - **Google developer verification**: Register early; AOSP ROMs (GrapheneOS/CalyxOS) unaffected by enforcement
 - **Signing transparency**: Published SHA-256 certificate fingerprints; documented key custody
@@ -901,9 +901,9 @@ The authoritative roadmap lives in [ARCHITECTURE.md §15](./docs/ARCHITECTURE.md
 
 | ID | Question | Options | Recommendation |
 |----|----------|---------|----------------|
-| Q1 | Open source vs. proprietary? | Full OSS / Core OSS / Proprietary | **Decided ([ADR-014](./docs/adr/014-open-source-posture.md)): proprietary initially; revisit ~Phase 3.** Verifier CLI **and the evidence format specification** are FOSS regardless — independent verification that requires trusting us is not independent |
+| Q1 | Open source vs. proprietary? | Full OSS / Core OSS / Proprietary | **Decided ([ADR-014](./docs/adr/014-open-source-posture.md), [ADR-016](./docs/adr/016-apache-2-whole-repository.md)): the whole repository is Apache-2.0; the product projects' license is re-examined before the first public release.** Verifier CLI **and the evidence format specification** are open regardless — independent verification that requires trusting us is not independent |
 | Q2 | Self-hosting option? | Yes / No | Yes, for orgs with compliance needs |
-| Q3 | Jurisdiction for incorporated entity? | US / EU / Other | **Publishing entity: NimbleJinn LLC (New Hampshire, forming).** Service-hosting jurisdiction still open (legal question) |
+| Q3 | Jurisdiction for incorporated entity? | US / EU / Other | **Publishing entity: Jeffrey Varszegi; an LLC (New Hampshire) is planned before store publication.** Service-hosting jurisdiction still open (legal question) |
 | Q4 | Recording consent notifications? | Always / Configurable / Jurisdiction-based | Jurisdiction-based with safe defaults |
 | Q5 | Insurance/liability coverage? | Required / Optional | Required for peace of mind |
 | Q6 | Name - "Personal Recorder"? | Keep / Alternatives | **Decided: kept; namespaces `PersonalRecorder.*`.** Rebranding later needs no codebase change, so the name does not gate progress. Candidates preserved in [design/NAMING.md](./design/NAMING.md) |

@@ -15,7 +15,7 @@
     <MauiXamlInflator>SourceGen</MauiXamlInflator>
 
     <ApplicationTitle>Personal Recorder</ApplicationTitle>
-    <ApplicationId>com.nimblejinn.personalrecorder</ApplicationId>
+    <ApplicationId>com.jeffreyvarszegi.personalrecorder</ApplicationId>
     <ApplicationDisplayVersion>0.1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
 
