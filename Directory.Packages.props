@@ -1,0 +1,38 @@
+<Project>
+
+  <!--
+    Central Package Management. All package versions live here; projects reference
+    packages without versions. Exception: Microsoft.Maui.Controls uses VersionOverride
+    with $(MauiVersion) so it tracks the installed workload rather than a pinned literal.
+  -->
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup Label="Service">
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <!-- Pinned above 2.7.5: Microsoft.OpenApi 2.0.0 (pulled transitively by
+         Microsoft.AspNetCore.OpenApi) carries GHSA-v5pm-xwqc-g5wc / CVE-2026-49451,
+         a high-severity uncontrolled-recursion DoS. Patched in 2.7.5. -->
+    <PackageVersion Include="Microsoft.OpenApi" Version="2.11.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Web">
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" />
+  </ItemGroup>
+
+  <ItemGroup Label="Client">
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Testing">
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+</Project>

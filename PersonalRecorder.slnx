@@ -1,0 +1,48 @@
+<Solution>
+  <Folder Name="/components/" />
+  <Folder Name="/components/client/" />
+  <Folder Name="/components/client/src/">
+    <Project Path="components/client/src/PersonalRecorder.Client.AndroidHarness/PersonalRecorder.Client.AndroidHarness.csproj" />
+    <Project Path="components/client/src/PersonalRecorder.Client.App/PersonalRecorder.Client.App.csproj" />
+    <Project Path="components/client/src/PersonalRecorder.Client.Capture.Abstractions/PersonalRecorder.Client.Capture.Abstractions.csproj" />
+    <Project Path="components/client/src/PersonalRecorder.Client.Capture.Android/PersonalRecorder.Client.Capture.Android.csproj" />
+    <Project Path="components/client/src/PersonalRecorder.Client.Capture.Ios/PersonalRecorder.Client.Capture.Ios.csproj" />
+    <Project Path="components/client/src/PersonalRecorder.Client.Core/PersonalRecorder.Client.Core.csproj" />
+  </Folder>
+  <Folder Name="/components/client/test/">
+    <Project Path="components/client/test/PersonalRecorder.Client.Tests/PersonalRecorder.Client.Tests.csproj" />
+  </Folder>
+  <Folder Name="/components/contracts/" />
+  <Folder Name="/components/contracts/src/">
+    <Project Path="components/contracts/src/PersonalRecorder.Contracts/PersonalRecorder.Contracts.csproj" />
+  </Folder>
+  <Folder Name="/components/evidence/" />
+  <Folder Name="/components/evidence/src/">
+    <Project Path="components/evidence/src/PersonalRecorder.Evidence/PersonalRecorder.Evidence.csproj" />
+  </Folder>
+  <Folder Name="/components/evidence/test/">
+    <Project Path="components/evidence/test/PersonalRecorder.Evidence.Tests/PersonalRecorder.Evidence.Tests.csproj" />
+  </Folder>
+  <Folder Name="/components/service/" />
+  <Folder Name="/components/service/src/">
+    <Project Path="components/service/src/PersonalRecorder.Service.Api/PersonalRecorder.Service.Api.csproj" />
+    <Project Path="components/service/src/PersonalRecorder.Service.Application/PersonalRecorder.Service.Application.csproj" />
+    <Project Path="components/service/src/PersonalRecorder.Service.Domain/PersonalRecorder.Service.Domain.csproj" />
+    <Project Path="components/service/src/PersonalRecorder.Service.Infrastructure/PersonalRecorder.Service.Infrastructure.csproj" />
+    <Project Path="components/service/src/PersonalRecorder.Service.Workers/PersonalRecorder.Service.Workers.csproj" />
+  </Folder>
+  <Folder Name="/components/service/test/">
+    <Project Path="components/service/test/PersonalRecorder.Service.Tests/PersonalRecorder.Service.Tests.csproj" />
+  </Folder>
+  <Folder Name="/components/verifier/" />
+  <Folder Name="/components/verifier/src/">
+    <Project Path="components/verifier/src/PersonalRecorder.Verifier/PersonalRecorder.Verifier.csproj" />
+  </Folder>
+  <Folder Name="/components/web/" />
+  <Folder Name="/components/web/src/">
+    <Project Path="components/web/src/PersonalRecorder.Web/PersonalRecorder.Web.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/PersonalRecorder.ArchitectureTests/PersonalRecorder.ArchitectureTests.csproj" />
+  </Folder>
+</Solution>
