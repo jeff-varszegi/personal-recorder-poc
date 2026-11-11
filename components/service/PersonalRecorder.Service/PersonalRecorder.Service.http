@@ -1,0 +1,7 @@
+@PersonalRecorder.Service_HostAddress = http://localhost:5135
+
+### Liveness probe
+GET {{PersonalRecorder.Service_HostAddress}}/health
+Accept: application/json
+
+###

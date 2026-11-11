@@ -1,7 +1,6 @@
 # Proposal 001: Consolidated Project and Namespace Layout
 
-**Status:** Proposed — for review, nothing executed
-**Supersedes if ratified:** [ARCHITECTURE.md §5.2/§5.3](../ARCHITECTURE.md); amends [ADR-005](../adr/005-aspnet-core-lean-backend.md) (data access, API style), [ADR-007](../adr/007-shared-evidence-library.md) (assembly name), [ADR-014](../adr/014-open-source-posture.md) (FOSS boundary)
+**Status:** Ratified and executed — recorded as [ADR-015](../adr/015-consolidated-layout-and-service-stack.md). Kept for the fuller reasoning behind L1–L9.
 
 ---
 
@@ -226,7 +225,7 @@ At-least-once is exactly the right guarantee here: a duplicate alert is a minor 
 | **L8** | Service organised by feature namespace, not by layer | **Yes** (§3.4) |
 | **L9** | Keep `Harness` for Phase 0, delete after Spike C passes | **Yes**, with the deletion written down now |
 
-## 9. If ratified
+## 9. Execution
 
 1. Restructure the solution — the projects are empty, so this is a file move plus csproj edits, not a migration.
 2. Rewrite `DependencyRuleTests` at namespace/type level (§6) — the real work, roughly a day.

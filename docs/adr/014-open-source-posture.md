@@ -1,7 +1,7 @@
 # ADR-014: Open-Source Posture — Verifier and Evidence Format Are FOSS
 
 ## Status
-Accepted
+Accepted — amended by [ADR-015](./015-consolidated-layout-and-service-stack.md): the open-source boundary is `PersonalRecorder.Core` (which contains the evidence format and its implementation) plus `PersonalRecorder.Verifier`.
 
 ## Context
 The audience for this product includes people pointing a recording app at their own government. "Trust us" does not scale to that audience: *is this spyware?* and *can this recording be trusted?* are questions they are right to ask and should not have to take our word on.

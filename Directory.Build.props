@@ -2,7 +2,7 @@
 
   <!--
     Solution-wide build settings. See docs/ARCHITECTURE.md §4.1 (runtime policy)
-    and §5.3 (dependency rules, enforced by test/PersonalRecorder.ArchitectureTests).
+    and §5.3 (dependency rules, enforced by test/PersonalRecorder.Tests).
   -->
 
   <PropertyGroup>
@@ -14,6 +14,16 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <Deterministic>true</Deterministic>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--
+      IncludeMobileTargets=false drops the net10.0-android flavour of multi-targeted projects,
+      so a host without the Android workload (the CI "core" job, a service-only checkout) can
+      still restore, build and test everything portable. Android-only projects (App, Harness)
+      are left out by the solution filter PersonalRecorder.WorkloadFree.slnf instead.
+    -->
+    <IncludeMobileTargets Condition="'$(IncludeMobileTargets)' == ''">true</IncludeMobileTargets>
   </PropertyGroup>
 
   <PropertyGroup>

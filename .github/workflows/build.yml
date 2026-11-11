@@ -12,8 +12,10 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  # Everything that does not need a mobile workload: service, web, evidence,
-  # verifier, contracts, and the architecture rules (ARCHITECTURE.md §5.3).
+  # Everything that needs no mobile workload: Core, the portable flavour of Client,
+  # Service, Web, Verifier, and the tests (including the architecture rules,
+  # ARCHITECTURE.md §5.3). The solution filter leaves out the Android-only App and
+  # Harness; IncludeMobileTargets=false drops Client's net10.0-android flavour.
   core:
     runs-on: ubuntu-latest
     steps:
@@ -24,16 +26,16 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        run: dotnet restore PersonalRecorder.slnx
+        run: dotnet restore PersonalRecorder.WorkloadFree.slnf -p:IncludeMobileTargets=false
 
       - name: Build
-        run: dotnet build PersonalRecorder.slnx --no-restore -c Release
+        run: dotnet build PersonalRecorder.WorkloadFree.slnf --no-restore -c Release -p:IncludeMobileTargets=false
 
       - name: Test
-        run: dotnet test PersonalRecorder.slnx --no-build -c Release --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test PersonalRecorder.WorkloadFree.slnf --no-build -c Release -p:IncludeMobileTargets=false --logger "trx;LogFileName=test-results.trx"
 
       - name: Publish web (PWA)
-        run: dotnet publish components/web/src/PersonalRecorder.Web -c Release -o artifacts/web
+        run: dotnet publish components/web/PersonalRecorder.Web -c Release -o artifacts/web -p:IncludeMobileTargets=false
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -55,11 +57,11 @@ jobs:
       - name: Install Android workloads
         run: dotnet workload install maui-android android
 
-      - name: Build capture core and shell
+      - name: Build capture core, harness and shell
         run: |
-          dotnet build components/client/src/PersonalRecorder.Client.Capture.Android -c Release
-          dotnet build components/client/src/PersonalRecorder.Client.AndroidHarness -c Release
-          dotnet build components/client/src/PersonalRecorder.Client.App -c Release
+          dotnet build components/client/PersonalRecorder.Client -c Release
+          dotnet build components/client/PersonalRecorder.Harness -c Release
+          dotnet build components/client/PersonalRecorder.App -c Release
 
       # APK packaging and signing land with distribution v1 (ADR-012). Signing keys are
       # generated offline in a documented ceremony and never enter this repository.

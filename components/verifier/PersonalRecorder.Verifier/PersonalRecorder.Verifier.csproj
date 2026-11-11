@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PersonalRecorder.Verifier — the open-source, offline evidence verifier (ADR-007, ADR-014).
+    Depends on Core and nothing else: no service reference, no network stack. Ships as a
+    NativeAOT binary so that a lawyer or a journalist can run one file: PublishAot is switched
+    on with verifier 1.0 (ARCHITECTURE.md §15, Phase 3). Core already builds under the AOT
+    analyzers, so nothing it uses will be a surprise then. (Enabling it today pulls the SDK's
+    bundled ILCompiler 10.0.12, which carries advisory GHSA-p3jp-9v83-76w9; pin a patched
+    version when switching it on.)
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>PersonalRecorder.Verifier</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\PersonalRecorder.Core\PersonalRecorder.Core.csproj" />
+  </ItemGroup>
+
+</Project>

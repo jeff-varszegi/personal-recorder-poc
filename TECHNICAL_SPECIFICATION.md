@@ -339,8 +339,8 @@ Personal Recorder is a personal recording and emergency-response system designed
 | Layer | Technology | Notes |
 |-------|-----------|-------|
 | UI shell | .NET MAUI (`net10.0-android`, later `net10.0-ios`) | Thin, replaceable; Uno Platform is the pre-agreed fallback |
-| Shared client logic | `PersonalRecorder.Client.Core` (`net10.0`) | View-models, state machines, sync queue, crypto, API/SignalR clients |
-| Capture core | `Capture.Android` / `Capture.Ios` platform libraries | CameraX/Camera2 + MediaCodec; AVCaptureSession + AVAssetWriter; foreground services; keystore/enclave |
+| Shared client logic | `PersonalRecorder.Client` (`net10.0` flavour) | View-models, state machines, sync queue, API/SignalR clients |
+| Capture core | `PersonalRecorder.Client` platform flavours (`Platforms/Android`, `Platforms/Ios`) | CameraX/Camera2 + MediaCodec; AVCaptureSession + AVAssetWriter; foreground services; keystore/enclave |
 | Encryption | libsodium (.NET bindings) | Content crypto; OS keystore for key custody |
 | Local store | Encrypted SQLite + encrypted CMAF segment ring | Prioritized persistent upload queue |
 
@@ -410,19 +410,19 @@ Rationale:
 
 #### Technology Stack (lean MVP — see [ADR-005](./docs/adr/005-aspnet-core-lean-backend.md))
 - **Runtime**: .NET 10 (LTS)
-- **API Framework**: ASP.NET Core Minimal APIs
+- **API Framework**: ASP.NET Core controllers ([ADR-015](./docs/adr/015-consolidated-layout-and-service-stack.md))
 - **Real-time**: SignalR for WebSocket, heartbeat, presence, alerts
-- **ORM**: Entity Framework Core with PostgreSQL (Npgsql)
+- **Data access**: Dapper + Npgsql (PostgreSQL 17); DbUp SQL migrations ([ADR-015](./docs/adr/015-consolidated-layout-and-service-stack.md))
 - **Object Storage**: S3 API via MinIO (dev/self-host) or any S3-compatible provider
 - **Background Work**: .NET hosted services + PostgreSQL-backed outbox (MassTransit/RabbitMQ deferred until multi-node)
 - **Cache**: none at MVP (PostgreSQL-first; Redis deferred until measured need)
-- **Authentication**: ASP.NET Core Identity + JWT (+ TOTP 2FA)
+- **Authentication**: JWT + TOTP 2FA over bespoke tables; no ASP.NET Core Identity ([ADR-015](./docs/adr/015-consolidated-layout-and-service-stack.md))
 - **API Documentation**: OpenAPI
-- **Contracts**: shared C# project (`PersonalRecorder.Contracts`) consumed by service, clients, and Blazor web — no TypeScript generation needed
+- **Shared library**: `PersonalRecorder.Core` (models, evidence format, cryptography) consumed by the service, the clients, the Blazor web app and the verifier — no TypeScript generation needed
 
 ### 4.4 Data Models
 
-> *Shapes below are illustrative, in TypeScript notation; canonical definitions land as C# records in `PersonalRecorder.Contracts`.*
+> *Shapes below are illustrative, in TypeScript notation; canonical definitions land as C# records in `PersonalRecorder.Models`, in `PersonalRecorder.Core`.*
 
 #### User
 ```typescript

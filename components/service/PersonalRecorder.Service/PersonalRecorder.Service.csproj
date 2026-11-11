@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    PersonalRecorder.Service — the whole back end in one process (ADR-005): REST controllers,
+    SignalR hubs, hosted workers, Dapper over PostgreSQL, S3-compatible object storage.
+    Organised by feature namespace rather than by layer (ADR-015); the boundaries between
+    features are enforced by test/PersonalRecorder.Tests.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>PersonalRecorder.Service</RootNamespace>
+    <UserSecretsId>personal-recorder-service</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="dbup-postgresql" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.OpenApi" />
+    <PackageReference Include="Npgsql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\PersonalRecorder.Core\PersonalRecorder.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Schema migrations are plain SQL, embedded and applied in name order by DbUp. -->
+    <EmbeddedResource Include="Data\Migrations\*.sql" />
+  </ItemGroup>
+
+</Project>

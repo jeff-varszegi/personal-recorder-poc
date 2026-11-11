@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PersonalRecorder.Harness — a headless .NET for Android app that drives the capture core
+    with no UI framework in the way. It exists so that Spike A (Android capture core) can
+    proceed independently of Spike C (MAUI shell), and it doubles as the soak-test and
+    device-farm vehicle. Scheduled for deletion once Spike C passes (ADR-015).
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PersonalRecorder.Harness</RootNamespace>
+    <SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>
+    <ApplicationId>com.nimblejinn.personalrecorder.harness</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>0.1.0</ApplicationDisplayVersion>
+    <TrimMode>full</TrimMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PersonalRecorder.Client\PersonalRecorder.Client.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -17,6 +17,9 @@
          Microsoft.AspNetCore.OpenApi) carries GHSA-v5pm-xwqc-g5wc / CVE-2026-49451,
          a high-severity uncontrolled-recursion DoS. Patched in 2.7.5. -->
     <PackageVersion Include="Microsoft.OpenApi" Version="2.11.0" />
+    <PackageVersion Include="Dapper" Version="2.1.89" />
+    <PackageVersion Include="dbup-postgresql" Version="7.0.1" />
+    <PackageVersion Include="Npgsql" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup Label="Web">
@@ -31,6 +34,7 @@
   <ItemGroup Label="Testing">
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="NetArchTest.eNhancedEdition" Version="1.4.5" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
   </ItemGroup>

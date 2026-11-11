@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PersonalRecorder.Core — the shared vocabulary of the system and the open-source
+    boundary (ADR-014, ADR-015). The root-level namespaces live here: PersonalRecorder,
+    .Models, .Evidence, .Cryptography. No I/O, no network, no platform: this assembly runs
+    unmodified on the phone, in the browser (WebAssembly) and in the NativeAOT verifier,
+    so the trim and AOT analyzers keep it honest.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>PersonalRecorder</RootNamespace>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+</Project>

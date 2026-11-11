@@ -1,0 +1,13 @@
+{
+  "solution": {
+    "path": "PersonalRecorder.slnx",
+    "projects": [
+      "components\\client\\PersonalRecorder.Client\\PersonalRecorder.Client.csproj",
+      "components\\core\\PersonalRecorder.Core\\PersonalRecorder.Core.csproj",
+      "components\\service\\PersonalRecorder.Service\\PersonalRecorder.Service.csproj",
+      "components\\verifier\\PersonalRecorder.Verifier\\PersonalRecorder.Verifier.csproj",
+      "components\\web\\PersonalRecorder.Web\\PersonalRecorder.Web.csproj",
+      "test\\PersonalRecorder.Tests\\PersonalRecorder.Tests.csproj"
+    ]
+  }
+}

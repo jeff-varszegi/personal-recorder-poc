@@ -1,7 +1,7 @@
 # ADR-002: Native C# Capture Core with a Thin .NET MAUI Shell
 
 ## Status
-Accepted
+Accepted — amended by [ADR-015](./015-consolidated-layout-and-service-stack.md) in names only: `Capture.Abstractions`, `Client.Core`, `Client.Capture.Android` and `Client.Capture.Ios` are now the `Capture`, `Recording`/`Sync`/`Presentation`, `Capture.Android` and `Capture.Ios` namespaces of the one `PersonalRecorder.Client` assembly. The boundary, and its enforcement, are unchanged.
 
 ## Context
 The make-or-break client requirements are platform-service integrations, not UI: camera pre-warm with a rolling encrypted lookback buffer and hardware encoding (`REC-003/004`, `PERF-001/003`), background recording via foreground services (`PERF-004`), keystore-backed local encryption (`STR-008`), a sub-two-second panic pipeline (`PERF-002`), and background location (`LOC-*`).

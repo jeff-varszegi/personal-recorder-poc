@@ -1,7 +1,7 @@
 # ADR-005: ASP.NET Core Backend with Minimal MVP Infrastructure
 
 ## Status
-Accepted
+Accepted — amended by [ADR-015](./015-consolidated-layout-and-service-stack.md): controllers rather than minimal APIs, Dapper and DbUp rather than EF Core, and no ASP.NET Core Identity. The footprint decision (one process, PostgreSQL, S3, no Redis or broker) stands.
 
 ## Context
 The service's job is narrower than it first appears. Because content is end-to-end encrypted (ADR-008), the server cannot transcode, thumbnail, index text, or evaluate geofences. What it actually does is: accept encrypted blobs reliably, hold metadata, route alerts, watch heartbeats, enforce retention, and countersign chain heads.

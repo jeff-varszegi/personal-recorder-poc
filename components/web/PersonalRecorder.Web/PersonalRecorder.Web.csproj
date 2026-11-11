@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <!--
+    PersonalRecorder.Web — the Blazor WebAssembly PWA (ADR-004): dashboard, emergency console,
+    E2EE playback, in-browser verification, and the degraded fallback recorder. It references
+    the net10.0 flavour of Client (view-models, service clients, sync) and runs the same Core
+    evidence code the phone wrote with.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>PersonalRecorder.Web</RootNamespace>
+    <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\PersonalRecorder.Core\PersonalRecorder.Core.csproj" />
+    <ProjectReference Include="..\..\client\PersonalRecorder.Client\PersonalRecorder.Client.csproj" />
+  </ItemGroup>
+
+</Project>

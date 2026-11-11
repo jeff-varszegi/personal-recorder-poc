@@ -138,13 +138,13 @@ The decisive payoff of one language: **`PersonalRecorder.Evidence` — the same 
 
 | Concern | MVP | Scale path (deferred until measured) |
 |---|---|---|
-| API | ASP.NET Core Minimal APIs + OpenAPI | — |
+| API | ASP.NET Core controllers + OpenAPI (ADR-015) | — |
 | Real-time | SignalR (heartbeat, presence, alerts, live-view notify) | Redis backplane when multi-node |
-| Data | EF Core + Npgsql (PostgreSQL 17) | Read replicas; partition location/segment tables |
+| Data | Dapper + Npgsql (PostgreSQL 17); DbUp SQL migrations (ADR-015) | Read replicas; partition location/segment tables |
 | Object store | S3 API — MinIO for dev/self-host, any S3-compatible provider in prod | Lifecycle rules for tiering (`STR-004`) |
 | Background work | .NET hosted services + PostgreSQL outbox; `LISTEN/NOTIFY` for pub/sub | MassTransit + RabbitMQ when justified |
 | Cache | None | Redis when measured |
-| AuthN | ASP.NET Core Identity + JWT, TOTP 2FA | Passkeys (Phase 2) |
+| AuthN | JWT + TOTP 2FA over bespoke Dapper-backed tables; no ASP.NET Core Identity (ADR-015) | Passkeys (Phase 2) |
 
 Rationale for the trim: each component is an operational liability for a small team running a service people's safety depends on, and `docker compose up` producing a complete working system is a real censorship-resistance property, not a developer convenience. .NET Aspire is a reasonable dev-time inner-loop convenience but is **not adopted** for MVP — Compose stays canonical because it is also the self-host artifact.
 
@@ -184,73 +184,65 @@ Rationale for the trim: each component is an operational liability for a small t
 
 ### 5.2 Solution layout
 
-Top-down, one solution, `components/` convention:
-
-As built — nineteen projects, `dotnet build` and `dotnet test` green:
+One solution, eight projects, `components/` convention (ADR-015). `dotnet build` and `dotnet test` green:
 
 ```
 personal-recorder/
-├── PersonalRecorder.slnx                                # .NET 10 XML solution format
+├── PersonalRecorder.slnx                        # .NET 10 XML solution format
+├── PersonalRecorder.WorkloadFree.slnf           # the subset that builds without a mobile workload (CI core job)
 ├── global.json · Directory.Build.props · Directory.Packages.props · .editorconfig
 ├── components/
-│   ├── contracts/src/PersonalRecorder.Contracts/        # net10.0 — DTOs, enums, SignalR contracts, error codes
-│   ├── evidence/
-│   │   ├── src/PersonalRecorder.Evidence/               # net10.0 — segment format, hash chain, crypto, verification
-│   │   └── test/PersonalRecorder.Evidence.Tests/
+│   ├── core/PersonalRecorder.Core/              # net10.0 — open source. Namespaces: PersonalRecorder, .Models, .Evidence, .Cryptography
 │   ├── client/
-│   │   ├── src/PersonalRecorder.Client.Core/            # net10.0 — view-models, state machines, sync queue, API/SignalR clients
-│   │   ├── src/PersonalRecorder.Client.Capture.Abstractions/   # net10.0 — IRecordingEngine et al.
-│   │   ├── src/PersonalRecorder.Client.Capture.Android/ # net10.0-android — CameraX, MediaCodec, FGS, Keystore
-│   │   ├── src/PersonalRecorder.Client.Capture.Ios/     # net10.0-ios — AVFoundation, Keychain/Enclave
-│   │   ├── src/PersonalRecorder.Client.App/             # MAUI shell (net10.0-android; iOS TFM added in Phase 2)
-│   │   ├── src/PersonalRecorder.Client.AndroidHarness/  # headless .NET for Android test app — no MAUI
-│   │   └── test/PersonalRecorder.Client.Tests/
-│   ├── service/
-│   │   ├── src/PersonalRecorder.Service.Api/            # host: REST + SignalR + OpenAPI
-│   │   ├── src/PersonalRecorder.Service.Application/    # use cases, ports
-│   │   ├── src/PersonalRecorder.Service.Domain/         # entities, invariants, domain events
-│   │   ├── src/PersonalRecorder.Service.Infrastructure/ # EF Core, S3, outbox, push adapters
-│   │   ├── src/PersonalRecorder.Service.Workers/        # heartbeat, alerts, retention, GC (hosted in Api at MVP)
-│   │   └── test/PersonalRecorder.Service.Tests/
-│   ├── web/src/PersonalRecorder.Web/                    # Blazor WASM PWA
-│   └── verifier/src/PersonalRecorder.Verifier/          # CLI — open source
-├── test/PersonalRecorder.ArchitectureTests/             # §5.3 rules — span every component, so they live above them
-├── tools/docker-compose.dev.yml                         # PostgreSQL 17 + MinIO, buckets auto-created
-├── .github/workflows/build.yml                          # core job + separate Android job
-├── docs/                                                # this file, ADRs, threat model
-└── design/                                              # naming history, UX notes
+│   │   ├── PersonalRecorder.Client/             # net10.0 + net10.0-android (+ios in Phase 2): Capture, Recording, Sync, Storage, Remote, Presentation
+│   │   ├── PersonalRecorder.App/                # MAUI shell — net10.0-android (+ios in Phase 2)
+│   │   └── PersonalRecorder.Harness/            # headless .NET for Android capture harness; deleted once Spike C passes
+│   ├── service/PersonalRecorder.Service/        # net10.0 — one process, feature namespaces (§9.1)
+│   ├── web/PersonalRecorder.Web/                # Blazor WASM PWA
+│   └── verifier/PersonalRecorder.Verifier/      # CLI — open source
+├── test/PersonalRecorder.Tests/                 # .Core · .Client · .Service · .Architecture
+├── tools/docker-compose.dev.yml                 # PostgreSQL 17 + MinIO, buckets auto-created
+├── .github/workflows/build.yml                  # core job (workload-free filter) + separate Android job
+├── docs/                                        # this file, ADRs, proposals
+└── design/                                      # naming history, UX notes
 ```
 
-Two notes on the as-built layout. Architecture tests sit at the repository root rather than
-under `service/test`, because their rules span client, web and verifier as well. `Service.Workers`
-is a class library whose hosted services the API registers — MVP is one process (ADR-005), and
-splitting it out later is a deployment change, not a code change.
+Four things force an assembly boundary, and nothing else does: target framework, deployment artifact, the open-source boundary (ADR-014), and the replaceable shell (ADR-002). Layering inside an assembly is expressed by namespace and enforced by §5.3.
 
-[Proposal 001](./proposals/001-consolidated-project-and-namespace-layout.md) proposes consolidating
-this layout to eight projects, with layering enforced at namespace level instead of by project
-references. It is awaiting ratification; until then this section describes what is on disk.
+**Naming.** `Core` owns the root namespace: it contains `PersonalRecorder`, `PersonalRecorder.Models`, `PersonalRecorder.Evidence` and `PersonalRecorder.Cryptography`, and the `Core` segment appears in no namespace. Every other assembly namespaces under its own name (`PersonalRecorder.Client.Capture`, `PersonalRecorder.Service.Ingest`).
 
-**The headless Android harness is deliberate.** It exercises the capture core with no UI-framework variables — fast iteration on the hard parts, and it doubles as the soak-test and CI device-test vehicle.
+**Client** is multi-targeted. The `net10.0` flavour is what the Blazor PWA references — view-models, service clients, the sync queue — and has no capture implementation. Platform code lives under `Platforms/<os>/` and is compiled in by folder convention, never by `#if`. Namespaces: `.Capture` (the contracts and the COLD/WARM/HOT/RECORDING state machine, with platform implementations in `.Capture.Android` and `.Capture.Ios`), `.Recording` (session orchestration, lookback, the panic pipeline), `.Sync` (the one prioritized upload queue), `.Storage` (local encrypted store and search index), `.Remote` (HTTP and SignalR clients), `.Presentation` (view-models shared by the shell and the browser; no UI-framework types — this is the seam that makes the shell replaceable).
 
-### 5.3 Dependency rules (enforced by architecture tests from commit one)
+**Service** is organised by feature, not by layer: `.Ingest`, `.Artifacts`, `.Circles`, `.Alerts`, `.Heartbeat`, `.Sharing`, `.Identity` (§9.1), meeting at `.Data` (Dapper repositories, row types, migrations), `.Storage` (S3) and `.Messaging` (outbox and push adapters), with `.Controllers`, `.Hubs` and `.Workers` as the entry points.
+
+**The headless Android harness is deliberate.** It exercises the capture core with no UI-framework variables — fast iteration on the hard parts — and doubles as the soak-test and CI device-test vehicle. It exists so Spike A can proceed without waiting on Spike C, and is deleted when Spike C passes.
+
+### 5.3 Dependency rules (enforced by `test/PersonalRecorder.Tests`)
+
+Project level — six edges, read from the `.csproj` files:
 
 ```
-Contracts        → (BCL only)
-Evidence         → Contracts
-Capture.Abstractions → Evidence, Contracts
-Capture.Android  → Capture.Abstractions            (never → Client.Core, never → any UI)
-Capture.Ios      → Capture.Abstractions
-Client.Core      → Capture.Abstractions, Evidence, Contracts   (no platform, no UI)
-Client.App       → Client.Core, Capture.Abstractions           (DI binds platform impls)
-Web              → Evidence, Contracts, Client.Core (shared view-models where useful)
-Verifier         → Evidence, Contracts             (no network, no service reference)
-Service.Domain   → (nothing)
-Service.Application → Domain, Contracts
-Service.Infrastructure → Application
-Service.Api      → Application, Infrastructure, Contracts
+Core     → (BCL only; no packages)
+Client   → Core
+App      → Client
+Harness  → Client
+Web      → Core, Client
+Service  → Core
+Verifier → Core                    (no service reference, no network stack)
 ```
 
-Violations fail the build. This is what keeps §4.3 true over time.
+Namespace level — read from the compiled IL, because project references cannot see inside an assembly:
+
+```
+Core                             → never Client, Service, Web or App; no System.Net, no ASP.NET
+Client.Capture.*                 → never Microsoft.Maui.*, never Client.Presentation
+Client.Presentation              → never any UI framework
+Service.<feature>                → never another feature, never Controllers, Hubs or Workers
+Service.Data / Storage / Messaging → never a feature, never an entry point
+Verifier                         → never Service, never System.Net
+```
+
+Violations fail the build. This is what keeps §4.3 true over time, and it catches what project references never could — a view-model leaking into the capture core inside one assembly.
 
 ---
 
@@ -318,7 +310,7 @@ This table is why iOS is Phase 2: Android delivers the full vision; iOS delivers
 
 ## 7. Evidence format and integrity
 
-`PersonalRecorder.Evidence` is the single canonical implementation — used by both capture cores, the browser (WASM), the verifier CLI, and the service (chain-continuity checks only, never decryption). One format, one implementation, no drift.
+The `PersonalRecorder.Evidence` namespace of `PersonalRecorder.Core` is the single canonical implementation — used by both capture cores, the browser (WASM), the verifier CLI, and the service (chain-continuity checks only, never decryption). One format, one implementation, no drift.
 
 ### 7.1 Segment container (`.prseg`)
 
@@ -424,6 +416,8 @@ Blinded tag tokens are a deliberate trade: they buy server-side tag filtering at
 ## 9. Service
 
 ### 9.1 Modules
+
+Each module is a feature namespace of `PersonalRecorder.Service` (ADR-015); features meet at `Data`, `Storage` and `Messaging`, and at the controllers, hubs and workers — never directly.
 
 | Module | Responsibility |
 |---|---|
@@ -581,7 +575,7 @@ Two tracks run in parallel; the second is calendar-critical and mostly not engin
 
 ### Phase 1 — MVP: Android + Web (10–12 weeks)
 
-Auth (Identity + JWT + TOTP); video/audio/snapshot capture with lookback; notes and tags (system, custom, smart sort); panic + 911 overlay + single-circle alerts (SignalR + FCM + UnifiedPush); location tracking and metadata; retention windows, pinning, auto-disable safety net; Blazor dashboard (browse, filter, playback, export); **distribution v1** (direct APK + self-updater + own F-Droid repo + published fingerprints). Trusted-cohort beta from ~week 8.
+Auth (JWT + TOTP over bespoke tables); video/audio/snapshot capture with lookback; notes and tags (system, custom, smart sort); panic + 911 overlay + single-circle alerts (SignalR + FCM + UnifiedPush); location tracking and metadata; retention windows, pinning, auto-disable safety net; Blazor dashboard (browse, filter, playback, export); **distribution v1** (direct APK + self-updater + own F-Droid repo + published fingerprints). Trusted-cohort beta from ~week 8.
 
 ### Phase 2 — iOS + Circles (8–10 weeks)
 
@@ -660,7 +654,7 @@ D1–D15 ratified as recommended. Two carried explicit comment from Jeffrey: **D
 | D14 | iOS in Phase 2 | This document, §15 |
 | D15 | **Name kept**: "Personal Recorder", `PersonalRecorder.*`. Rebranding later requires no codebase change | This document |
 
-Web-surface technology (Blazor WASM PWA, §4.4) was ratified implicitly as part of the whole and is recorded as [ADR-004](./adr/004-blazor-wasm-pwa.md).
+Web-surface technology (Blazor WASM PWA, §4.4) was ratified implicitly as part of the whole and is recorded as [ADR-004](./adr/004-blazor-wasm-pwa.md). The layout and service-stack decisions L1–L9 of [Proposal 001](./proposals/001-consolidated-project-and-namespace-layout.md) are recorded as [ADR-015](./adr/015-consolidated-layout-and-service-stack.md).
 
 ---
 

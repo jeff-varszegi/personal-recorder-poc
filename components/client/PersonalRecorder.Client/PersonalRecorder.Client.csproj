@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PersonalRecorder.Client — everything that runs on a device and is not a screen: the
+    capture contracts and platform capture cores, recording orchestration and the panic
+    pipeline, the upload queue, local storage, service clients, and the view-models the
+    shells bind to (ADR-002, ADR-015).
+
+    Multi-targeted. The net10.0 flavour is what the Blazor PWA references: it carries the
+    portable namespaces and simply has no capture implementation. Platform code is selected
+    by folder (Platforms/<os>/**), never by #if.
+  -->
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net10.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="'$(IncludeMobileTargets)' != 'true'">net10.0</TargetFrameworks>
+    <RootNamespace>PersonalRecorder.Client</RootNamespace>
+    <IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+    <SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Platforms/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+    <Compile Include="Platforms/Android/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\PersonalRecorder.Core\PersonalRecorder.Core.csproj" />
+  </ItemGroup>
+
+</Project>

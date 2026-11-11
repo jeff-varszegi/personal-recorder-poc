@@ -1,7 +1,7 @@
 # ADR-007: One Shared Evidence Library and an Open Format Specification
 
 ## Status
-Accepted
+Accepted — amended by [ADR-015](./015-consolidated-layout-and-service-stack.md): the library is the `PersonalRecorder.Evidence` namespace of the `PersonalRecorder.Core` assembly rather than an assembly of its own. The guarantee — one implementation, every host — is unchanged.
 
 ## Context
 The evidence format is written by two capture cores and the browser fallback recorder, and read by native players, the browser console, the export tooling and an independent verifier. In a multi-language stack that means four or five implementations of the same container, chain and crypto — and any divergence between them is a recording that fails verification in court while being perfectly intact.

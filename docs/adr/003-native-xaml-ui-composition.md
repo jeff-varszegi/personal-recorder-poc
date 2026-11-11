@@ -1,7 +1,7 @@
 # ADR-003: Native MAUI XAML for the MVP Shell, Not Blazor Hybrid
 
 ## Status
-Accepted
+Accepted — amended by [ADR-015](./015-consolidated-layout-and-service-stack.md) in names only: `Client.Core`, `Contracts` and `Evidence` are now namespaces of `PersonalRecorder.Client` and `PersonalRecorder.Core`.
 
 ## Context
 Because the whole system is C#, a tempting option exists: write the mobile UI as Razor components in a MAUI Blazor Hybrid host and share those components with the Blazor WebAssembly dashboard. One UI codebase for phone and browser.
